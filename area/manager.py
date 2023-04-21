@@ -10,8 +10,11 @@ def get_area_by_name(db: Session, name: str):
 def get_all(db: Session):
     return db.query(model.Area).all()
 
+area_counter = 1
 
 def create_area(db: Session, area: schemas.Area):
+
+    global area_counter
 
     user = db.query(model.Account).filter(
         model.Account.id == area.account_id).first()
@@ -23,7 +26,7 @@ def create_area(db: Session, area: schemas.Area):
         area.account_id = user.id
 
     db_area = model.Area(
-        id=uuid.uuid4().hex,
+        id=str(area_counter),
         name=area.name,
         description=area.description,
         available=area.available,
@@ -33,6 +36,8 @@ def create_area(db: Session, area: schemas.Area):
     db.add(db_area)
     db.commit()
     db.refresh(db_area)
+
+    area_counter += 1
 
     # execute()
 

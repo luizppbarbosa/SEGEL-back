@@ -8,8 +8,10 @@ from database import model, schemas
 def get_all(db: Session):
     return db.query(model.Reservation).all()
 
+reservation_counter = 1
 
 def create_reservation(db: Session, reservation: schemas.Reservation):
+    global reservation_counter
 
     user = db.query(model.Account).filter(
         model.Account.id == reservation.account_id).first()
@@ -20,7 +22,7 @@ def create_reservation(db: Session, reservation: schemas.Reservation):
     if user and area:
 
         db_order = model.Reservation(
-            id=uuid.uuid4().hex,
+            id=str(reservation_counter),
             value=reservation.value,
             reservation_date=reservation.reservation_date,
             time_start=reservation.time_start,
@@ -35,6 +37,8 @@ def create_reservation(db: Session, reservation: schemas.Reservation):
         db.add(db_order)
         db.commit()
         db.refresh(db_order)
+
+        reservation_counter += 1
 
         # execute()
 
