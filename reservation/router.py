@@ -84,24 +84,3 @@ def delete_reservation(reservation_id: str, db: Session = Depends(get_db)):
     manager.delete_reservation(db=db, db_reservation = db_reservation)
     return {"message": "Reservation successfully deleted"}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# @router.post("/create", response_model=schemas.Reservation)
-# def create_reservation(reservation: schemas.Reservation, db: Session = Depends(get_db)):
-#     result = manager.create_reservation(db=db, reservation=reservation)
-#     if result == None:
-#         raise HTTPException(
-#             status_code=400, detail="User or Area doesn't exist try again.")
-#     return result

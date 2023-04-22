@@ -24,8 +24,4 @@ You can check all back-end endpoints at the following link:
 http://localhost:8000/docs
 
 
-# Google Sheet Link:
-
-All files and links necessary to connect with google Sheets will send by email. 
-
 ```

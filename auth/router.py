@@ -14,7 +14,6 @@ router = APIRouter(
 )
 
 
-
 @router.post("/sign-in", response_model=schemas.Token)
 async def login_for_access_token(db: Session = Depends(get_db), form_data: OAuth2PasswordRequestForm = Depends()):
     user = manager.authenticate_user(db, email=form_data.username, password=form_data.password)

@@ -79,11 +79,11 @@ def delete_reservation(db: Session, db_reservation: model.Reservation):
 
 def convert_datetime(reservation: schemas.Reservation):
     
-    reservation_date = datetime.strptime(reservation.reservation_date, '%m-%d-%Y').date()
+    reservation_date = datetime.strptime(reservation.reservation_date, '%d-%m-%Y').date()
     
-    reservation_start = datetime.strptime(reservation.time_start, '%H:%M:%S').time()
+    reservation_start = datetime.strptime(reservation.time_start, '%H:%M').time()
     
-    reservation_end = datetime.strptime(reservation.time_end, '%H:%M:%S').time()
+    reservation_end = datetime.strptime(reservation.time_end, '%H:%M').time()
 
     start_datetime = datetime.combine(reservation_date, reservation_start)
     

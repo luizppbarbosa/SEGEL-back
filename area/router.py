@@ -61,36 +61,3 @@ def area_delete_or_update(area_id: str, area: schemas.AreaDelete, db: Session = 
         result = manager.delete_area(db=db, db_area=db_area)
         return result
     
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    '''@router.put("/updatedell/{area_id}", response_model=schemas.Area)
-def delete_area_update(area_id: str, area: schemas.AreaDelete, db: Session = Depends(get_db)):
-    db_area = manager.get_area_by_id(db, id=area_id)
-    if not db_area:
-        raise HTTPException(
-            status_code=404, detail="Area not found")
-    delete_area_update = manager.delete_area_update(db=db, area=area, db_area=db_area)
-    return delete_area_update
-
-
-@router.delete("/delete/{area_id}")
-def delete_area(area_id: str, db: Session = Depends(get_db)):
-    db_area = manager.get_area_by_id(db, id=area_id)
-    if not db_area:
-        raise HTTPException(
-            status_code=404, detail="Area not found")
-    manager.delete_area(db=db, db_area=db_area)
-    return {"message": "Area deleted"}'''

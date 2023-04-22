@@ -119,8 +119,10 @@ def get_user_by_id(db: Session, id: str):
         return True   
     return False
 
+
 def get_account_reservations(account_id: str, db: Session):
     return db.query(model.Reservation).filter(model.Reservation.account_id == account_id).count()
+
 
 # Update Account
 def update_account(db: Session, account: schemas.AccountUpdate, db_account: model.Account):
@@ -135,6 +137,7 @@ def update_account(db: Session, account: schemas.AccountUpdate, db_account: mode
     db.commit()
     db.refresh(db_account)
     return db_account
+
 
 # Delete Account
 def delete_account(db: Session, db_account: model.Account):

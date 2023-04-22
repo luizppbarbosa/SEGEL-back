@@ -39,8 +39,6 @@ def create_area(db: Session, area: schemas.Area):
 
     area_counter += 1
 
-    # execute()
-
     return db_area
 
 
@@ -76,8 +74,6 @@ def delete_area(db: Session, db_area: model.Area):
 
 
 def delete_area_update(db: Session, db_area: model.Area):
-    '''if not db_area:
-        return None'''
     db_area.available = False
     db.commit()
     db.refresh(db_area)
