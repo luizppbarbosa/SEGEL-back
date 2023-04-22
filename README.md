@@ -15,7 +15,7 @@ Change the BASE_URL variable on the .env file with your credentials.
 
 After that running
 
-Copy the .env file and JSON google sheet file on the directory root
+Copy the .env file on the directory root
 
 $ python -m uvicorn main:app --reload
 
