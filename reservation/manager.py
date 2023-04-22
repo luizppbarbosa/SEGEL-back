@@ -2,7 +2,7 @@ from sqlalchemy.orm import Session
 import uuid
 from fastapi import HTTPException
 from database import model, schemas
-# from sheets.manager import execute
+from datetime import datetime
 
 
 def get_all(db: Session):
@@ -40,8 +40,6 @@ def create_reservation(db: Session, reservation: schemas.Reservation):
 
         reservation_counter += 1
 
-        # execute()
-
         return db_order
     else:
         return None
@@ -51,8 +49,6 @@ def get_reservation_by_id(db: Session, reservation_id: str):
     return db.query(model.Reservation).filter(model.Reservation.id == reservation_id).first()
 
 def update_reservation(db: Session, reservation: schemas.ReservationUpdate, db_reservation = model.Reservation):
-    #if not db_reservation:
-        #return None
     if reservation.value:
         db_reservation.value = reservation.value
     if reservation.reservation_date:
@@ -79,11 +75,18 @@ def update_reservation(db: Session, reservation: schemas.ReservationUpdate, db_r
 def delete_reservation(db: Session, db_reservation: model.Reservation):
     db.delete(db_reservation)
     db.commit()
+    return db_reservation
 
-'''def delete_reservation(db: Session, reservation_id: int):
-    db_reservation = get_reservation_by_id(db, reservation_id=reservation_id)
-    if not db_reservation:
-        return None
-    db.delete(db_reservation)
-    db.commit()
-    return db_reservation'''
+def convert_datetime(reservation: schemas.Reservation):
+    
+    reservation_date = datetime.strptime(reservation.reservation_date, '%m-%d-%Y').date()
+    
+    reservation_start = datetime.strptime(reservation.time_start, '%H:%M:%S').time()
+    
+    reservation_end = datetime.strptime(reservation.time_end, '%H:%M:%S').time()
+
+    start_datetime = datetime.combine(reservation_date, reservation_start)
+    
+    end_datetime = datetime.combine(reservation_date, reservation_end)
+
+    return [start_datetime, end_datetime]

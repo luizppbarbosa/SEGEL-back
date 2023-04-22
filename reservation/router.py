@@ -14,12 +14,38 @@ router = APIRouter(
 )
 
 
+# @router.post("/create", response_model=schemas.Reservation)
+# def create_reservation(reservation: schemas.Reservation, db: Session = Depends(get_db)):
+#     result = manager.create_reservation(db=db, reservation=reservation)
+#     if result == None:
+#         raise HTTPException(
+#             status_code=400, detail="User or Area doesn't exist try again.")
+#     return result
+
 @router.post("/create", response_model=schemas.Reservation)
 def create_reservation(reservation: schemas.Reservation, db: Session = Depends(get_db)):
+    
+    reserva_solicitada = manager.convert_datetime(reservation)
+
+    if reserva_solicitada[0] > reserva_solicitada[1]:
+        raise HTTPException(
+            status_code=400, detail="Time start is higher than time end")
+
+    existing_reservations = manager.get_all(db)
+    
+    for reservas in existing_reservations:
+        reservas_feitas = manager.convert_datetime(reservas)
+        
+        if (reservas_feitas[0] == reserva_solicitada[0] and reservas_feitas[1] == reserva_solicitada[1]) or (reservas_feitas[0] < reserva_solicitada[0] < reservas_feitas[1] or reservas_feitas[0] < reserva_solicitada[1] < reservas_feitas[1]):
+            raise HTTPException(
+            status_code=400, detail="Reservation date or hour already in use")
+
+
     result = manager.create_reservation(db=db, reservation=reservation)
     if result == None:
         raise HTTPException(
             status_code=400, detail="User or Area doesn't exist try again.")
+    
     return result
 
 
