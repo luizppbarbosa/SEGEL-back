@@ -54,7 +54,20 @@ def update_reservation(reservation_id: str, reservation: schemas.ReservationUpda
         raise HTTPException(
             status_code=404, detail="Reservation not found")
 
-    ############### choque de horário vai aqui
+    reserva_solicitada = manager.convert_datetime(reservation)
+
+    if reserva_solicitada[0] > reserva_solicitada[1]:
+        raise HTTPException(
+            status_code=400, detail="Time start is higher than time end")
+
+    existing_reservations = manager.get_reservations_by_area_id(db, reservation.area_id)
+    
+    for reservas in existing_reservations:
+        reservas_feitas = manager.convert_datetime(reservas)
+        
+        if (reservas_feitas[0] == reserva_solicitada[0] and reservas_feitas[1] == reserva_solicitada[1]) or (reservas_feitas[0] < reserva_solicitada[0] < reservas_feitas[1] or reservas_feitas[0] < reserva_solicitada[1] < reservas_feitas[1]):
+            raise HTTPException(
+            status_code=400, detail="Reservation date or hour already in use")
 
 
     updated_reservation = manager.update_reservation(db=db, db_reservation=db_reservation, reservation=reservation)
