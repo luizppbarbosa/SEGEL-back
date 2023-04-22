@@ -39,11 +39,11 @@ class Reservation(Base):
 
     id = Column(String, primary_key=True, index=True)
     value = Column(Integer)
-    reservation_date = Column(DateTime)
+    reservation_date = Column(String)
     time_start = Column(String)
     time_end = Column(String)
     justification = Column(String)
-    user_type = Column(String)
+    reservation_type = Column(String)
     status = Column(String)
     area_id = Column(String, ForeignKey("areas.id"))
     account_id = Column(String, ForeignKey("accounts.id"))

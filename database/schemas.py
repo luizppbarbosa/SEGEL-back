@@ -3,11 +3,11 @@ import datetime
 
 class ReservationBase(BaseModel):
     value: int
-    reservation_date: datetime.datetime
+    reservation_date: str
     time_start: str
     time_end: str
     justification: str
-    user_type: str
+    reservation_type: str
     status: str   
 
 class ReservationCreate(ReservationBase):
@@ -23,11 +23,11 @@ class Reservation(ReservationBase):
 
 class ReservationUpdate(BaseModel):
     value: int
-    reservation_date: datetime.datetime
+    reservation_date: str
     time_start: str
     time_end: str
     justification: str
-    user_type: str
+    reservation_type: str
     status: str
     area_id: str
     account_id: str
@@ -58,7 +58,10 @@ class AreaUpdate(BaseModel):
         orm_mode = True
 
 class AreaDelete(BaseModel):
+    name: str 
+    description: str 
     available: bool
+    account_id: str
 
     class Config:
         orm_mode = True

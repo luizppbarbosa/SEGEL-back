@@ -28,7 +28,7 @@ def create_reservation(db: Session, reservation: schemas.Reservation):
             time_start=reservation.time_start,
             time_end=reservation.time_end,
             justification=reservation.justification,
-            user_type=reservation.user_type,
+            reservation_type=reservation.reservation_type,
             status=reservation.status,
             area_id=reservation.area_id,
             account_id=reservation.account_id
@@ -63,8 +63,8 @@ def update_reservation(db: Session, reservation: schemas.ReservationUpdate, db_r
         db_reservation.time_end = reservation.time_end
     if reservation.justification:
         db_reservation.justification = reservation.justification
-    if reservation.user_type:
-        db_reservation.user_type = reservation.user_type
+    if reservation.reservation_type:
+        db_reservation.reservation_type = reservation.reservation_type
     if reservation.status:
         db_reservation.status = reservation.status
     if reservation.account_id:

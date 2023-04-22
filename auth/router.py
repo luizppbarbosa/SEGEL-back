@@ -49,19 +49,16 @@ def update_account(account_id: str, account: schemas.AccountUpdate, db: Session 
     return updated_account
 
 
-@router.put("/updatedell/{account_id}", response_model=schemas.Account)
-def delete_account_update(account_id: str, account: schemas.AccountDelete, db: Session = Depends(get_db)):
-    db_account = manager.get_account_by_id(db, account_id)
+@router.delete("/delete/{account_id}", response_model=schemas.Account)
+def area_delete_or_update(account_id: str, account: schemas.AccountDelete, db: Session = Depends(get_db)):
+    db_account = manager.get_account_by_id(db, account_id=account_id)
     if not db_account:
-        raise HTTPException(status_code=404, detail="Account not found")
-    delete_account_update = manager.delete_account_update(db=db, db_account=db_account, account=account)
-    return delete_account_update
-
-
-@router.delete("/delete/{account_id}")
-def delete_account(account_id: str, db: Session = Depends(get_db)):
-    db_account = manager.get_account_by_id(db, account_id)
-    if not db_account:
-        raise HTTPException(status_code=404, detail="Account not found")
-    manager.delete_account(db=db, db_account=db_account)
-    return {"message": "Account deleted successfully"}
+        raise HTTPException(
+            status_code=404, detail="Account not found")
+    count = manager.get_account_reservations(account_id = account_id, db=db)
+    if count > 0:
+        result = manager.delete_account_update(db=db, db_account=db_account)
+        return result
+    else:
+        result = manager.delete_account(db=db, db_account=db_account)
+        return result
