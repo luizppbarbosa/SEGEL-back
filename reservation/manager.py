@@ -90,3 +90,6 @@ def convert_datetime(reservation: schemas.Reservation):
     end_datetime = datetime.combine(reservation_date, reservation_end)
 
     return [start_datetime, end_datetime]
+
+def get_reservations_by_area_id(db: Session, area_id: str):
+    return db.query(model.Reservation).filter(model.Reservation.area_id == area_id).all()

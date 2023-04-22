@@ -14,14 +14,6 @@ router = APIRouter(
 )
 
 
-# @router.post("/create", response_model=schemas.Reservation)
-# def create_reservation(reservation: schemas.Reservation, db: Session = Depends(get_db)):
-#     result = manager.create_reservation(db=db, reservation=reservation)
-#     if result == None:
-#         raise HTTPException(
-#             status_code=400, detail="User or Area doesn't exist try again.")
-#     return result
-
 @router.post("/create", response_model=schemas.Reservation)
 def create_reservation(reservation: schemas.Reservation, db: Session = Depends(get_db)):
     
@@ -31,7 +23,7 @@ def create_reservation(reservation: schemas.Reservation, db: Session = Depends(g
         raise HTTPException(
             status_code=400, detail="Time start is higher than time end")
 
-    existing_reservations = manager.get_all(db)
+    existing_reservations = manager.get_reservations_by_area_id(db, reservation.area_id)
     
     for reservas in existing_reservations:
         reservas_feitas = manager.convert_datetime(reservas)
@@ -61,6 +53,10 @@ def update_reservation(reservation_id: str, reservation: schemas.ReservationUpda
     if not db_reservation:
         raise HTTPException(
             status_code=404, detail="Reservation not found")
+
+    ############### choque de horário vai aqui
+
+
     updated_reservation = manager.update_reservation(db=db, db_reservation=db_reservation, reservation=reservation)
     return updated_reservation
 
@@ -74,3 +70,25 @@ def delete_reservation(reservation_id: str, db: Session = Depends(get_db)):
             status_code=404, detail="Reservation not found")
     manager.delete_reservation(db=db, db_reservation = db_reservation)
     return {"message": "Reservation successfully deleted"}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# @router.post("/create", response_model=schemas.Reservation)
+# def create_reservation(reservation: schemas.Reservation, db: Session = Depends(get_db)):
+#     result = manager.create_reservation(db=db, reservation=reservation)
+#     if result == None:
+#         raise HTTPException(
+#             status_code=400, detail="User or Area doesn't exist try again.")
+#     return result
