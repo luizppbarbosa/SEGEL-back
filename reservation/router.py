@@ -8,7 +8,7 @@ from database.database import get_db
 from auth.manager import get_current_user
 
 router = APIRouter(
-    prefix="/reservations",
+    prefix="/reservation",
     tags=["Reservation"],
     responses={404: {"description": "Not found"}},
 )
