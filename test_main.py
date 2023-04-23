@@ -127,6 +127,52 @@ def test_create_reservation():
     assert reservation.status == new_reservation["status"]
     assert reservation.area_id == new_reservation["area_id"]
     assert reservation.account_id == new_reservation["account_id"]
+
+    # tentar criar uma outra reserva com o mesmo horário
+    another_reservation = {
+        "value": 0,
+        "reservation_date": "04-08-2023",
+        "time_start": "12:00",
+        "time_end": "13:00",
+        "justification": "Reserva conflito",
+        "reservation_type": "Reserva",
+        "status": "Arquivado",
+        "area_id": "1",
+        "account_id": "1"
+    }
+
+    # faz uma solicitação POST para o endpoint de criação da nova reserva
+    response = client.post("/reservation/create", json=another_reservation)
+
+    # verificar se a api não aceita a reserva (código 400)
+    assert response.status_code == 400
+
+
+    # tentar criar uma reserva com horário de início maior que o horário de término
+    another_reservation2 = {
+        "value": 0,
+        "reservation_date": "04-08-2023",
+        "time_start": "13:00",
+        "time_end": "12:00",
+        "justification": "Reserva falha",
+        "reservation_type": "Reserva",
+        "status": "Arquivado",
+        "area_id": "1",
+        "account_id": "1"
+    }
+
+    # faz uma solicitação POST para o endpoint de criação da nova reserva
+    response = client.post("/reservation/create", json=another_reservation2)
+
+    # verificar se a api não aceita a reserva (código 400)
+    assert response.status_code == 400
+
+    
+
+
+
+
+
     
 
 def test_update_account():
