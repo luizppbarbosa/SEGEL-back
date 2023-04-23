@@ -286,9 +286,7 @@ def test_delete_reservation():
 
 
 
-
-
-"""# limpar o banco de dados após a execução dos testes
+# limpar o banco de dados após a execução dos testes
 def test_clean_db():
     db = SessionLocal()
     db.query(model.Reservation).delete()
@@ -298,7 +296,7 @@ def test_clean_db():
     db.commit()
     db.close()
 
-    print("O banco de dados foi limpo com sucesso")"""
+    print("O banco de dados foi limpo com sucesso")
 
 
 
